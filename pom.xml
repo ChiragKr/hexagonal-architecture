@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.pluralkraft</groupId>
+    <artifactId>hexagonal-architecture</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Hexagonal Architecture</name>
+    <description>A multi-module Maven project implementing hexagonal architecture pattern</description>
+
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>21</java.version>
+        <spring.boot.version>4.0.5</spring.boot.version>
+    </properties>
+
+    <modules>
+        <module>adapters</module>
+        <module>application</module>
+        <module>bootstrap</module>
+        <module>domain</module>
+        <module>ports</module>
+    </modules>
+
+</project>
