@@ -23,7 +23,7 @@
         <dependency>
             <groupId>com.pluralkraft</groupId>
             <artifactId>ports-inbound</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
