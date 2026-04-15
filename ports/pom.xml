@@ -14,12 +14,6 @@
     <artifactId>ports</artifactId>
     <name>Ports Module</name>
     <description>Hexagonal Architecture - Ports Layer</description>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>inbound</module>
-        <module>outbound</module>
-    </modules>
 
     <properties>
         <java.version>21</java.version>

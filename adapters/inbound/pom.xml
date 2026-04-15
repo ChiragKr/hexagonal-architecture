@@ -19,11 +19,6 @@
         <java.version>21</java.version>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.pluralkraft</groupId>
-            <artifactId>ports-inbound</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
+    <dependencies></dependencies>
+
 </project>

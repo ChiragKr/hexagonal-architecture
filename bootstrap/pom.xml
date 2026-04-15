@@ -32,16 +32,9 @@
         </dependency>
         <dependency>
             <groupId>com.pluralkraft</groupId>
-            <artifactId>ports-inbound</artifactId>
+            <artifactId>ports</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.pluralkraft</groupId>
-            <artifactId>ports-outbound</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>com.pluralkraft</groupId>
             <artifactId>adapters-inbound</artifactId>
