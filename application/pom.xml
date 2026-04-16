@@ -23,12 +23,10 @@
         <dependency>
             <groupId>com.pluralkraft</groupId>
             <artifactId>domain</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.pluralkraft</groupId>
             <artifactId>ports</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

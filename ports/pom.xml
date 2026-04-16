@@ -23,7 +23,6 @@
         <dependency>
             <groupId>com.pluralkraft</groupId>
             <artifactId>domain</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

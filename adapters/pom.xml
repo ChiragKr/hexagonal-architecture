@@ -29,7 +29,6 @@
         <dependency>
             <groupId>com.pluralkraft</groupId>
             <artifactId>ports</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
