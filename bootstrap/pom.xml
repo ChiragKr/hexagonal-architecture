@@ -34,12 +34,19 @@
         </dependency>
         <dependency>
             <groupId>com.pluralkraft</groupId>
-            <artifactId>adapters-inbound</artifactId>
+            <artifactId>adapters-inbound-kafka</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.pluralkraft</groupId>
-            <artifactId>adapters-outbound</artifactId>
+            <artifactId>adapters-inbound-rest</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.pluralkraft</groupId>
+            <artifactId>adapters-outbound-kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.pluralkraft</groupId>
+            <artifactId>adapters-outbound-mongo</artifactId>
         </dependency>
     </dependencies>
 </project>

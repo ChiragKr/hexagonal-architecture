@@ -32,12 +32,22 @@
         <dependencies>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>adapters-inbound</artifactId>
+                <artifactId>adapters-inbound-kafka</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>adapters-outbound</artifactId>
+                <artifactId>adapters-inbound-rest</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>adapters-outbound-kafka</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>adapters-outbound-mongo</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

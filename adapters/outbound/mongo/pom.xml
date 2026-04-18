@@ -7,24 +7,17 @@
 
     <parent>
         <groupId>com.pluralkraft</groupId>
-        <artifactId>adapters</artifactId>
+        <artifactId>adapters-outbound</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>adapters-outbound</artifactId>
-    <name>Outbound Adapters</name>
-    <description>Hexagonal Architecture - Outbound Adapters Layer</description>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>kafka</module>
-        <module>mongo</module>
-    </modules>
+    <artifactId>adapters-outbound-mongo</artifactId>
+    <name>Outbound Mongo Adapter</name>
+    <description>Hexagonal Architecture - Outbound Mongo Adapter</description>
 
     <properties>
         <java.version>21</java.version>
     </properties>
 
     <dependencies></dependencies>
-
 </project>
