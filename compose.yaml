@@ -2,7 +2,7 @@ services:
 
   notification-service:
     build:
-      context: bootstrap
+      context: .
       dockerfile: Dockerfile
     container_name: notification-service
     ports:
