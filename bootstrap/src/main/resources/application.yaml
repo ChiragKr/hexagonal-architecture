@@ -12,3 +12,9 @@ spring:
       properties:
         '[spring.json.trusted.packages]': "com.pluralkraft.notification.domain.model"
         '[spring.json.value.default.type]': "com.pluralkraft.notification.domain.model.Notification"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+      properties:
+        '[spring.json.trusted.packages]': "com.pluralkraft.notification.domain.model"
+        '[spring.json.value.default.type]': "com.pluralkraft.notification.domain.model.Notification"
