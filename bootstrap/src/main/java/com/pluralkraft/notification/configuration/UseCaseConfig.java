@@ -10,11 +10,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.pluralkraft.notification.application.ProcessNotificationService;
+import com.pluralkraft.notification.application.QueueNotificationService;
 import com.pluralkraft.notification.domain.model.Notification;
 import com.pluralkraft.notification.domain.model.Receipt;
 import com.pluralkraft.notification.ports.in.ProcessNotificationUseCase;
 import com.pluralkraft.notification.ports.in.QueueNotificationUseCase;
 import com.pluralkraft.notification.ports.in.SendNotificationUseCase;
+import com.pluralkraft.notification.ports.out.QueueNotificationPort;
 
 /**
  * Configuration class for notification use cases.
@@ -49,24 +51,16 @@ public class UseCaseConfig {
 
     /**
      * Creates and configures the QueueNotificationUseCase bean.
+     * This bean provides queue-based notification processing functionality
+     * by delegating to the provided QueueNotificationPort implementation.
      *
-     * @return A QueueNotificationUseCase implementation that logs notifications
-     * @deprecated This is a temporary implementation. It should be replaced with
-     *             a proper QueueNotificationService once outbound ports are implemented.
+     * @param queue The QueueNotificationPort dependency for queue operations
+     * @return A QueueNotificationUseCase implementation that processes notifications
+     *         through the provided queue port
      */
     @Bean
-    QueueNotificationUseCase queueNotificationUseCase() {
-        // TODO: Return QueueNotificationService instead, after outbound ports implemented
-        return new QueueNotificationUseCase() {
-
-            private static final Logger LOG = LoggerFactory.getLogger("NoOpQueueNotification");
-
-            @Override
-            public void queue(Notification notification) {
-                LOG.info("Notification {}", notification);
-            }
-
-        };
+    QueueNotificationUseCase queueNotificationUseCase(QueueNotificationPort queue) {
+        return new QueueNotificationService(queue);
     }
 
     /**
