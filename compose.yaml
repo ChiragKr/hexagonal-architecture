@@ -11,6 +11,7 @@ services:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
     depends_on:
       - kafka
+      - mongo
 
   kafka:
     image: apache/kafka:4.0.1
@@ -34,5 +35,23 @@ services:
     volumes:
       - kafka-data:/var/lib/kafka/data
 
+  mongo:
+    image: mongo:8.0.0
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    restart: always
+    healthcheck:
+      test: [ 'CMD', 'mongosh', '--host', 'localhost', '--eval', "db.runCommand('ping').ok" ]
+      interval: 5s
+      timeout: 30s
+      retries: 30
+
 volumes:
   kafka-data:
+  mongo-data:

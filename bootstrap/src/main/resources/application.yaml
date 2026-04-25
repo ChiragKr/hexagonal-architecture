@@ -22,7 +22,7 @@ spring:
   mongodb:
     host: mongo
     port: 27017
-    username: 
-    password: 
+    username: admin
+    password: password
     database: notification
     authentication-database: admin
