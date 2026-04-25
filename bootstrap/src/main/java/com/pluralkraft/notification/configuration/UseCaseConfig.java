@@ -26,11 +26,13 @@ public class UseCaseConfig {
 
     /**
      * Creates and configures the SendNotificationUseCase bean.
+     * This bean provides notification sending functionality by delegating to
+     * the specified DeliveryRepository and NotificationSender implementations.
      *
-     * @return A SendNotificationUseCase implementation that logs notifications and
-     *         returns a successful receipt
-     * @deprecated This is a temporary implementation. It should be replaced with
-     *             a proper SendNotificationService once outbound ports are implemented.
+     * @param deliveryRepository the repository for persisting delivery records
+     * @param notificationSender the sender for actually delivering notifications
+     * @return A SendNotificationUseCase implementation that sends notifications
+     *         and persists delivery information
      */
     @Bean
     SendNotificationUseCase sendNotificationUseCase(

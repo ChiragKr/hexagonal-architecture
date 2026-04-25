@@ -54,6 +54,13 @@ public class AdapterConfig {
         return new KafkaQueueAdapter(kafkaTemplate);
     }
 
+    /**
+     * Creates and configures the MongoDB-based delivery repository bean.
+     * This bean provides persistence for delivery records using MongoDB as the underlying data store.
+     *
+     * @param mongoTemplate the Spring Data MongoDB template to use for database operations
+     * @return a configured MongoDeliveryRepository instance
+     */
     @Bean
     DeliveryRepository mongoDeliveryRepository(
         MongoTemplate mongoTemplate
@@ -61,6 +68,16 @@ public class AdapterConfig {
         return new MongoDeliveryRepository(mongoTemplate);
     }
 
+    /**
+     * Creates and configures a no-op notification sender bean.
+     * This is a temporary implementation that logs notifications instead of actually sending them.
+     * It should be replaced with a proper NotificationSender implementation once outbound
+     * notification services are configured.
+     *
+     * @return a configured NotificationSender instance that logs notifications
+     * @deprecated This is a temporary implementation. It should be replaced with
+     *             a proper NotificationSender once outbound ports are implemented.
+     */
     @Bean
     NotificationSender noOpNotificationSender() {
         return new NotificationSender() {
