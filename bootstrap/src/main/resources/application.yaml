@@ -18,3 +18,11 @@ spring:
       properties:
         '[spring.json.trusted.packages]': "com.pluralkraft.notification.domain.model"
         '[spring.json.value.default.type]': "com.pluralkraft.notification.domain.model.Notification"
+
+  mongodb:
+    host: mongo
+    port: 27017
+    username: admin
+    password: password
+    database: notification
+    authentication-database: admin

@@ -1,13 +1,20 @@
 package com.pluralkraft.notification.configuration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import com.pluralkraft.notification.adapters.inbound.kafka.KafkaNotificationConsumer;
 import com.pluralkraft.notification.adapters.outbound.kafka.KafkaQueueAdapter;
+import com.pluralkraft.notification.adapters.outbound.mongo.MongoDeliveryRepository;
 import com.pluralkraft.notification.domain.model.Notification;
+import com.pluralkraft.notification.domain.model.Receipt;
 import com.pluralkraft.notification.ports.in.ProcessNotificationUseCase;
+import com.pluralkraft.notification.ports.out.DeliveryRepository;
+import com.pluralkraft.notification.ports.out.NotificationSender;
 import com.pluralkraft.notification.ports.out.QueueNotificationPort;
 
 /**
@@ -45,5 +52,44 @@ public class AdapterConfig {
         KafkaTemplate<String, Notification> kafkaTemplate
     ) {
         return new KafkaQueueAdapter(kafkaTemplate);
+    }
+
+    /**
+     * Creates and configures the MongoDB-based delivery repository bean.
+     * This bean provides persistence for delivery records using MongoDB as the underlying data store.
+     *
+     * @param mongoTemplate the Spring Data MongoDB template to use for database operations
+     * @return a configured MongoDeliveryRepository instance
+     */
+    @Bean
+    DeliveryRepository mongoDeliveryRepository(
+        MongoTemplate mongoTemplate
+    ) {
+        return new MongoDeliveryRepository(mongoTemplate);
+    }
+
+    /**
+     * Creates and configures a no-op notification sender bean.
+     * This is a temporary implementation that logs notifications instead of actually sending them.
+     * It should be replaced with a proper NotificationSender implementation once outbound
+     * notification services are configured.
+     *
+     * @return a configured NotificationSender instance that logs notifications
+     * @deprecated This is a temporary implementation. It should be replaced with
+     *             a proper NotificationSender once outbound ports are implemented.
+     */
+    @Bean
+    NotificationSender noOpNotificationSender() {
+        return new NotificationSender() {
+
+            private static final Logger LOG = LoggerFactory.getLogger("NoOpNotificationSender");
+
+            @Override
+            public Receipt send(Notification notification) {
+                LOG.info("Notification {}", notification);
+                return new Receipt(true, "SUCCESS");
+            }
+
+        };
     }
 }

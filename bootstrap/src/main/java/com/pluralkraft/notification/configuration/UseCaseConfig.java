@@ -4,18 +4,17 @@
  */
 package com.pluralkraft.notification.configuration;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.pluralkraft.notification.application.ProcessNotificationService;
 import com.pluralkraft.notification.application.QueueNotificationService;
-import com.pluralkraft.notification.domain.model.Notification;
-import com.pluralkraft.notification.domain.model.Receipt;
+import com.pluralkraft.notification.application.SendNotificationService;
 import com.pluralkraft.notification.ports.in.ProcessNotificationUseCase;
 import com.pluralkraft.notification.ports.in.QueueNotificationUseCase;
 import com.pluralkraft.notification.ports.in.SendNotificationUseCase;
+import com.pluralkraft.notification.ports.out.DeliveryRepository;
+import com.pluralkraft.notification.ports.out.NotificationSender;
 import com.pluralkraft.notification.ports.out.QueueNotificationPort;
 
 /**
@@ -27,26 +26,20 @@ public class UseCaseConfig {
 
     /**
      * Creates and configures the SendNotificationUseCase bean.
+     * This bean provides notification sending functionality by delegating to
+     * the specified DeliveryRepository and NotificationSender implementations.
      *
-     * @return A SendNotificationUseCase implementation that logs notifications and
-     *         returns a successful receipt
-     * @deprecated This is a temporary implementation. It should be replaced with
-     *             a proper SendNotificationService once outbound ports are implemented.
+     * @param deliveryRepository the repository for persisting delivery records
+     * @param notificationSender the sender for actually delivering notifications
+     * @return A SendNotificationUseCase implementation that sends notifications
+     *         and persists delivery information
      */
     @Bean
-    SendNotificationUseCase sendNotificationUseCase() {
-        // TODO: Return SendNotificationService instead, after outbound ports implemented
-        return new SendNotificationUseCase() {
-
-            private static final Logger LOG = LoggerFactory.getLogger("NoOpSendNotification");
-
-            @Override
-            public Receipt send(Notification notification) {
-                LOG.info("Notification {}", notification);
-                return new Receipt(true, "SUCCESS");
-            }
-
-        };
+    SendNotificationUseCase sendNotificationUseCase(
+        DeliveryRepository deliveryRepository,
+        NotificationSender notificationSender
+    ) {
+        return new SendNotificationService(deliveryRepository, notificationSender);
     }
 
     /**
