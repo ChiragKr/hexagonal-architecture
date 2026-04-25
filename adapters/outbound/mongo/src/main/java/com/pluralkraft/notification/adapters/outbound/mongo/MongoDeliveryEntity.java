@@ -19,7 +19,7 @@ public class MongoDeliveryEntity {
 
     public MongoDeliveryEntity(String id, String notificationId, DeliveryStatus status) {
         this.id = id;
-        this.notificationId = notificationId;
+        this.notificationId = notificationId != null ? notificationId : "";
         this.status = status;
     }
 
@@ -36,7 +36,7 @@ public class MongoDeliveryEntity {
     }
 
     public void setNotificationId(String notificationId) {
-        this.notificationId = notificationId;
+        this.notificationId = notificationId != null ? notificationId : "";
     }
 
     public DeliveryStatus getStatus() {
@@ -44,6 +44,6 @@ public class MongoDeliveryEntity {
     }
 
     public void setStatus(DeliveryStatus status) {
-        this.status = status;
+        this.status = status != null ? status : DeliveryStatus.PENDING;
     }
 }
