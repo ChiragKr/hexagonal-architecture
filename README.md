@@ -156,3 +156,71 @@ Verify application logs:
 % docker logs notification-service | tail -n 1
 2026-04-23T18:55:27.382Z  INFO 1 --- [notification] [ntainer#0-0-C-1] NoOpSendNotification                     : Notification Notification[id=05cb39db-f296-4e88-ae07-3bbfb9dd739b, payload=SOME-QUEUE-PAYLOAD]
 ```
+
+### Mongo Outbound
+
+Open interactive terminal to the mongo container:
+```bash
+docker exec -it mongo sh
+```
+
+Use MongoDB shell to connect to the MongoDB:
+```
+# mongosh --host localhost --username admin --password password
+test> use notification
+switched to db notification
+notification> 
+```
+
+Use cURL to send HTTP request:
+```
+curl --verbose --location 'http://localhost:8080/api/notifications/send' \
+--header 'Content-Type: application/json' \
+--data '{
+    "id": "1448a6d3-994c-48ec-93fb-fa86b125fab4",
+    "payload": "SOME-PAYLOAD"
+}'
+```
+
+HTTP response:
+```
+* Host localhost:8080 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:8080...
+* Connected to localhost (::1) port 8080
+> POST /api/notifications/send HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/8.7.1
+> Accept: */*
+> Content-Type: application/json
+> Content-Length: 83
+> 
+* upload completely sent off: 83 bytes
+< HTTP/1.1 200 
+< Content-Type: application/json
+< Transfer-Encoding: chunked
+< Date: Sat, 25 Apr 2026 11:09:09 GMT
+< 
+* Connection #0 to host localhost left intact
+{"success":true,"response":"SUCCESS"}
+```
+
+Verify database record:
+```
+notification> db.deliveries.find()
+[
+  {
+    _id: 'e0e5df13-5f30-47bc-816f-1f6619cffe25',
+    notificationId: '1448a6d3-994c-48ec-93fb-fa86b125fab4',
+    status: 'SUCCESS',
+    _class: 'com.pluralkraft.notification.adapters.outbound.mongo.MongoDeliveryEntity'
+  }
+]
+```
+
+Verify application logs:
+```
+% docker logs notification-service | tail -n 1
+2026-04-25T11:09:09.099Z  INFO 1 --- [notification] [nio-8080-exec-1] NoOpNotificationSender                   : Notification Notification[id=1448a6d3-994c-48ec-93fb-fa86b125fab4, payload=SOME-PAYLOAD]
+```
