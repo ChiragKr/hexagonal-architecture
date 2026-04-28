@@ -26,3 +26,7 @@ spring:
     password: password
     database: notification
     authentication-database: admin
+
+notification:
+  web:
+    endpoint: http://localhost:8080

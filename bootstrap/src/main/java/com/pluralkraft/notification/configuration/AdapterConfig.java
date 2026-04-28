@@ -1,5 +1,6 @@
 package com.pluralkraft.notification.configuration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -67,17 +68,16 @@ public class AdapterConfig {
     }
 
     /**
-     * Creates and configures a no-op notification sender bean.
-     * This is a temporary implementation that logs notifications instead of actually sending them.
-     * It should be replaced with a proper NotificationSender implementation once outbound
-     * notification services are configured.
+     * Creates and configures a web-based notification sender bean.
+     * This bean makes POST requests to a configurable endpoint at /ping path.
      *
-     * @return a configured NotificationSender instance that logs notifications
-     * @deprecated This is a temporary implementation. It should be replaced with
-     *             a proper NotificationSender once outbound ports are implemented.
+     * @param webEndpointUrl the base URL to send notifications to
+     * @return a configured NotificationSender instance that sends notifications via HTTP POST
      */
     @Bean
-    NotificationSender webNotificationSender() {
-        return new WebNotificationSender() ;
+    NotificationSender webNotificationSender(
+        @Value("${notification.web.endpoint:http://localhost:8080}") String webEndpointUrl
+    ) {
+        return new WebNotificationSender(webEndpointUrl);
     }
 }
