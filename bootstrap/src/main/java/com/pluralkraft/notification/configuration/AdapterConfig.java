@@ -1,7 +1,5 @@
 package com.pluralkraft.notification.configuration;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -10,8 +8,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import com.pluralkraft.notification.adapters.inbound.kafka.KafkaNotificationConsumer;
 import com.pluralkraft.notification.adapters.outbound.kafka.KafkaQueueAdapter;
 import com.pluralkraft.notification.adapters.outbound.mongo.MongoDeliveryRepository;
+import com.pluralkraft.notification.adapters.outbound.web.WebNotificationSender;
 import com.pluralkraft.notification.domain.model.Notification;
-import com.pluralkraft.notification.domain.model.Receipt;
 import com.pluralkraft.notification.ports.in.ProcessNotificationUseCase;
 import com.pluralkraft.notification.ports.out.DeliveryRepository;
 import com.pluralkraft.notification.ports.out.NotificationSender;
@@ -79,17 +77,7 @@ public class AdapterConfig {
      *             a proper NotificationSender once outbound ports are implemented.
      */
     @Bean
-    NotificationSender noOpNotificationSender() {
-        return new NotificationSender() {
-
-            private static final Logger LOG = LoggerFactory.getLogger("NoOpNotificationSender");
-
-            @Override
-            public Receipt send(Notification notification) {
-                LOG.info("Notification {}", notification);
-                return new Receipt(true, "SUCCESS");
-            }
-
-        };
+    NotificationSender webNotificationSender() {
+        return new WebNotificationSender() ;
     }
 }
