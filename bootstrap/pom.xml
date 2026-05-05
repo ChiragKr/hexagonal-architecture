@@ -52,6 +52,10 @@
             <groupId>com.pluralkraft</groupId>
             <artifactId>adapters-outbound-mongo</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.pluralkraft</groupId>
+            <artifactId>adapters-outbound-web</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

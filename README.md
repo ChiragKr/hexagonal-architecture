@@ -224,3 +224,54 @@ Verify application logs:
 % docker logs notification-service | tail -n 1
 2026-04-25T11:09:09.099Z  INFO 1 --- [notification] [nio-8080-exec-1] NoOpNotificationSender                   : Notification Notification[id=1448a6d3-994c-48ec-93fb-fa86b125fab4, payload=SOME-PAYLOAD]
 ```
+
+### Web Outbound
+
+Use cURL to send HTTP request:
+
+NOTE: For asynchronous processing send request to `http://localhost:8080/api/notifications/queue`
+```
+curl --verbose --location 'http://localhost:8080/api/notifications/send' \
+--header 'Content-Type: application/json' \
+--data '{
+    "id": "b2486ffb-b04d-4ec2-a85e-e98744ecfdbd",
+    "payload": "SOME-PAYLOAD"
+}'
+```
+
+
+HTTP response:
+
+NOTE: `PingController` returns HTTP status 500 for 25% requests (randomly). Response will be different in that case.
+```
+* Host localhost:8080 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:8080...
+* Connected to localhost (::1) port 8080
+> POST /api/notifications/send HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/8.7.1
+> Accept: */*
+> Content-Type: application/json
+> Content-Length: 83
+> 
+* upload completely sent off: 83 bytes
+< HTTP/1.1 200 
+< Content-Type: application/json
+< Transfer-Encoding: chunked
+< Date: Tue, 05 May 2026 18:33:45 GMT
+< 
+* Connection #0 to host localhost left intact
+{"success":true,"response":"SUCCESS"}%
+```
+
+Verify application logs:
+
+NOTE: `PingController` returns HTTP status 500 for 25% requests (randomly). Logs will be different in that case.
+```
+% docker logs notification-service | tail -n 3
+2026-05-05T18:33:45.752Z  INFO 1 --- [notification] [nio-8080-exec-7] c.p.n.a.o.web.WebNotificationSender      : Sending notification to web endpoint: http://localhost:8080/ping
+2026-05-05T18:33:45.753Z  INFO 1 --- [notification] [nio-8080-exec-8] c.p.n.a.inbound.rest.PingController      : Received ping request with Notificaiton=Notification[id=b2486ffb-b04d-4ec2-a85e-e98744ecfdbd, payload=SOME-PAYLOAD]
+2026-05-05T18:33:45.755Z  INFO 1 --- [notification] [nio-8080-exec-7] c.p.n.a.o.web.WebNotificationSender      : Notification sent successfully to: http://localhost:8080/ping
+```
