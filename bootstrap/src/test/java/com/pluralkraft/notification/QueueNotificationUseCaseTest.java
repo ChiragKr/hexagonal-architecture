@@ -13,17 +13,11 @@ import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
-import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.client.RestTestClient;
 
-import com.pluralkraft.notification.configuration.AdapterConfig;
-import com.pluralkraft.notification.configuration.UseCaseConfig;
 import com.pluralkraft.notification.domain.model.Delivery;
 import com.pluralkraft.notification.domain.model.DeliveryStatus;
 import com.pluralkraft.notification.domain.model.Notification;
@@ -31,46 +25,8 @@ import com.pluralkraft.notification.domain.model.Receipt;
 import com.pluralkraft.notification.ports.out.DeliveryRepository;
 import com.pluralkraft.notification.ports.out.NotificationSender;
 
-/**
- * Integration test for queue notification use case.
- * 
- * Test validates the complete flow through the system including:
- * - REST API endpoints
- * - Kafka message processing
- * - In-memory persistence
- */
-@SpringBootTest(
-	classes = {
-		AdapterConfig.class,
-		UseCaseConfig.class,
-		NotificationApplication.class
-	}, 
-	webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
-@EmbeddedKafka(
-    partitions = 1,
-    topics = {
-        "notifications"
-    },
-    brokerProperties = {
-        "listeners=EXTERNAL://localhost:0,CONTROLLER://localhost:0",
-        "listener.security.protocol.map=EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT",
-        "inter.broker.listener.name=EXTERNAL",
-		"controller.listener.names=CONTROLLER"
-    }
-)
-@TestPropertySource(
-    locations = "classpath:application.yaml",
-    properties = {
-        "spring.kafka.topic.name=notifications",
-        "spring.kafka.consumer.group-id=notification-group-it",
-        "spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}",
-        "classpath:/"
-    }
-)
 @AutoConfigureRestTestClient
-@DirtiesContext
-class QueueNotificationUseCaseTest {
+class QueueNotificationUseCaseTest extends NotificationApplicationTests {
 
     @LocalServerPort
     private int port;

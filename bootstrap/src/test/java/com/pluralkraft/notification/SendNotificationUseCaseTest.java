@@ -15,15 +15,11 @@ import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.client.RestTestClient;
 
-import com.pluralkraft.notification.configuration.AdapterConfig;
-import com.pluralkraft.notification.configuration.UseCaseConfig;
 import com.pluralkraft.notification.domain.model.Delivery;
 import com.pluralkraft.notification.domain.model.DeliveryStatus;
 import com.pluralkraft.notification.domain.model.Notification;
@@ -31,27 +27,8 @@ import com.pluralkraft.notification.domain.model.Receipt;
 import com.pluralkraft.notification.ports.out.DeliveryRepository;
 import com.pluralkraft.notification.ports.out.NotificationSender;
 
-/**
- * Integration tests for all notification use cases in the hexagonal
- * architecture
- * application.
- * These tests validate the complete flow through the system including:
- * - REST API endpoints
- * - Kafka message processing
- * - MongoDB persistence
- * - Web adapter HTTP calls
- */
-@SpringBootTest(
-	classes = {
-		AdapterConfig.class,
-		UseCaseConfig.class,
-		NotificationApplication.class
-	}, 
-	webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
 @AutoConfigureRestTestClient
-@DirtiesContext
-class SendNotificationUseCaseTest {
+class SendNotificationUseCaseTest extends NotificationApplicationTests {
 
     @LocalServerPort
     private int port;
