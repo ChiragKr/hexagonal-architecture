@@ -12,3 +12,21 @@ spring:
       properties:
         '[spring.json.trusted.packages]': "com.pluralkraft.notification.domain.model"
         '[spring.json.value.default.type]': "com.pluralkraft.notification.domain.model.Notification"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+      properties:
+        '[spring.json.trusted.packages]': "com.pluralkraft.notification.domain.model"
+        '[spring.json.value.default.type]': "com.pluralkraft.notification.domain.model.Notification"
+
+#   mongodb:
+#     host: mongo
+#     port: 27017
+#     username: admin
+#     password: password
+#     database: notification
+#     authentication-database: admin
+
+# notification:
+#   web:
+#     endpoint: http://localhost:8080
