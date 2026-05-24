@@ -1,6 +1,5 @@
 package com.pluralkraft.notification;
 
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -10,7 +9,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,24 +72,15 @@ class SendNotificationUseCaseTest extends NotificationApplicationTests {
         // Verify that the notification sender was called
         verify(notificationSender, times(1)).send(any(Notification.class));
 
-        // Use awaitility to check that the delivery was persisted and status updated
-        await()
-            .atMost(10, TimeUnit.SECONDS)
-            .pollInterval(100, TimeUnit.MILLISECONDS)
-            .until(() -> {
-                // Check that a delivery was created with the correct notification ID
-                boolean found = false;
-                InMemoryDeliveryRepository inMemoryDeliveryRepository = 
-                    (InMemoryDeliveryRepository) deliveryRepository;
-                for (Delivery delivery : inMemoryDeliveryRepository.getAllDeliveries().values()) {
-                    if (delivery.notificationId().equals(notification.id())) {
-                        found = true;
-                        // Verify the status was updated to DELIVERED
-                        assertEquals(DeliveryStatus.SUCCESS, delivery.status());
-                        break;
-                    }
-                }
-                return found;
-            });
+        // Check that a delivery was created with the correct notification ID
+        InMemoryDeliveryRepository inMemoryDeliveryRepository =
+            (InMemoryDeliveryRepository) deliveryRepository;
+        for (Delivery delivery : inMemoryDeliveryRepository.getAllDeliveries().values()) {
+            if (delivery.notificationId().equals(notification.id())) {
+                // Verify the status was updated to DELIVERED
+                assertEquals(DeliveryStatus.SUCCESS, delivery.status());
+                break;
+            }
+        }
     }
 }
