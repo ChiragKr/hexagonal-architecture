@@ -53,6 +53,13 @@ public class AdapterConfig {
         return new KafkaQueueAdapter(kafkaTemplate);
     }
 
+    /**
+     * Creates and configures the MongoDB-based delivery repository bean.
+     * This bean provides persistence for delivery records using MongoDB as the underlying data store.
+     *
+     * @param mongoTemplate the Spring Data MongoDB template to use for database operations
+     * @return a configured MongoDeliveryRepository instance
+     */
     @Bean
     DeliveryRepository mongoDeliveryRepository(
         MongoTemplate mongoTemplate
