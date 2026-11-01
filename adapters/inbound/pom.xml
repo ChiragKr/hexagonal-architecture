@@ -19,6 +19,7 @@
     <modules>
         <module>kafka</module>
         <module>rest</module>
+        <module>scheduler</module>
     </modules>
 
     <properties>
