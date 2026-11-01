@@ -79,6 +79,7 @@ class SendNotificationUseCaseTest extends NotificationApplicationTests {
             if (delivery.notificationId().equals(notification.id())) {
                 // Verify the status was updated to DELIVERED
                 assertEquals(DeliveryStatus.SUCCESS, delivery.status());
+                assertEquals(notification.payload(), delivery.payload());
                 break;
             }
         }
