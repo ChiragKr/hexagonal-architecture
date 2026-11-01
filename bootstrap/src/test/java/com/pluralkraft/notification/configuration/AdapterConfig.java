@@ -9,7 +9,7 @@ import com.pluralkraft.notification.adapters.inbound.kafka.KafkaNotificationCons
 import com.pluralkraft.notification.adapters.outbound.kafka.KafkaQueueAdapter;
 import com.pluralkraft.notification.domain.model.Notification;
 import com.pluralkraft.notification.domain.model.Receipt;
-import com.pluralkraft.notification.ports.in.ProcessNotificationUseCase;
+import com.pluralkraft.notification.ports.in.SendNotificationUseCase;
 import com.pluralkraft.notification.ports.out.DeliveryRepository;
 import com.pluralkraft.notification.ports.out.NotificationSender;
 import com.pluralkraft.notification.ports.out.QueueNotificationPort;
@@ -26,14 +26,14 @@ public class AdapterConfig {
      * This bean listens to the "notifications" Kafka topic and processes
      * incoming notification messages using the provided use case.
      *
-     * @param processNotificationUseCase the use case to process notifications
+     * @param sendNotificationUseCase the use case to send notifications
      * @return a configured KafkaNotificationConsumer instance
      */
     @Bean
     KafkaNotificationConsumer kafkaNotificationConsumer(
-        ProcessNotificationUseCase processNotificationUseCase
+        SendNotificationUseCase sendNotificationUseCase
     ) {
-        return new KafkaNotificationConsumer(processNotificationUseCase);
+        return new KafkaNotificationConsumer(sendNotificationUseCase);
     }
 
     /**

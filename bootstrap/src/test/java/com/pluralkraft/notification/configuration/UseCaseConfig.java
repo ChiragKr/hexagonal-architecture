@@ -7,10 +7,8 @@ package com.pluralkraft.notification.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.pluralkraft.notification.application.ProcessNotificationService;
 import com.pluralkraft.notification.application.QueueNotificationService;
 import com.pluralkraft.notification.application.SendNotificationService;
-import com.pluralkraft.notification.ports.in.ProcessNotificationUseCase;
 import com.pluralkraft.notification.ports.in.QueueNotificationUseCase;
 import com.pluralkraft.notification.ports.in.SendNotificationUseCase;
 import com.pluralkraft.notification.ports.out.DeliveryRepository;
@@ -54,16 +52,5 @@ public class UseCaseConfig {
     @Bean
     QueueNotificationUseCase queueNotificationUseCase(QueueNotificationPort queue) {
         return new QueueNotificationService(queue);
-    }
-
-    /**
-     * Creates and configures the ProcessNotificationUseCase bean.
-     *
-     * @param sender The SendNotificationUseCase dependency to be used by the service
-     * @return A ProcessNotificationUseCase implementation using the provided sender
-     */
-    @Bean
-    ProcessNotificationUseCase processNotificationUseCase(SendNotificationUseCase sender) {
-        return new ProcessNotificationService(sender);
     }
 }
