@@ -54,6 +54,7 @@ public class SendNotificationService implements SendNotificationUseCase {
         Delivery delivery = new Delivery(
             deliveryId,
             notification.id(),
+            notification.payload(),
             DeliveryStatus.PENDING);
 
         delivery = deliveryRepository.save(delivery);
