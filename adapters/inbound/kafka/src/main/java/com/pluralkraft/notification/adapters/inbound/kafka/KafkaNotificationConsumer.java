@@ -1,31 +1,36 @@
 package com.pluralkraft.notification.adapters.inbound.kafka;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 
 import com.pluralkraft.notification.domain.model.Notification;
-import com.pluralkraft.notification.ports.in.ProcessNotificationUseCase;
+import com.pluralkraft.notification.domain.model.Receipt;
+import com.pluralkraft.notification.ports.in.SendNotificationUseCase;
 
 /**
  * Kafka consumer for handling notification messages.
  * This adapter listens to the "notifications" topic and processes incoming
- * notification messages using the process notification use case.
+ * notification messages using the send notification use case.
  */
 public class KafkaNotificationConsumer {
 
+    private static final Logger log = LoggerFactory.getLogger(KafkaNotificationConsumer.class);
+
     /**
-     * The use case responsible for processing notifications.
+     * The use case responsible for sending notifications.
      */
-    private final ProcessNotificationUseCase processUseCase;
+    private final SendNotificationUseCase sendUseCase;
 
     /**
      * Constructs a new KafkaNotificationConsumer with the specified use case.
      *
-     * @param processUseCase the use case to process notifications
+     * @param sendUseCase the use case to send notifications
      */
     public KafkaNotificationConsumer(
-        ProcessNotificationUseCase processUseCase
+        SendNotificationUseCase sendUseCase
     ) {
-        this.processUseCase = processUseCase;
+        this.sendUseCase = sendUseCase;
     }
 
     /**
@@ -36,6 +41,7 @@ public class KafkaNotificationConsumer {
      */
     @KafkaListener(topics = "notifications")
     public void consume(Notification notification) {
-        processUseCase.process(notification);
+        Receipt receipt = sendUseCase.send(notification);
+        log.info("Notification sent: {}", receipt);
     }
 }
