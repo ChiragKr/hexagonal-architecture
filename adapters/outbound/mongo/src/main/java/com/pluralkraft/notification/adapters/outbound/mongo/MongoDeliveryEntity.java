@@ -1,6 +1,10 @@
 package com.pluralkraft.notification.adapters.outbound.mongo;
 
+import java.time.Instant;
+
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.pluralkraft.notification.domain.model.DeliveryStatus;
 
@@ -8,9 +12,21 @@ import com.pluralkraft.notification.domain.model.DeliveryStatus;
  * MongoDB entity representing a delivery record.
  * This entity maps to the "deliveries" collection in MongoDB
  * and is used to persist delivery information.
+ *
+ * <p>The {@code lockedBy}/{@code lockedUntil} fields implement a lease-based claim so that,
+ * with multiple application instances, a failed delivery is retried by a single instance only.
  */
 @Document(collection = "deliveries")
+@CompoundIndex(name = "status_updatedAt", def = "{'status': 1, 'updatedAt': -1}")
 public class MongoDeliveryEntity {
+
+    /** Field names used in queries. */
+    static final String FIELD_ID = "id";
+    static final String FIELD_STATUS = "status";
+    static final String FIELD_RETRY_COUNT = "retryCount";
+    static final String FIELD_LOCKED_BY = "lockedBy";
+    static final String FIELD_LOCKED_UNTIL = "lockedUntil";
+    static final String FIELD_UPDATED_AT = "updatedAt";
 
     /**
      * The unique identifier for the delivery record.
@@ -25,9 +41,40 @@ public class MongoDeliveryEntity {
     private String notificationId;
 
     /**
+     * The payload of the notification, persisted so the notification can be retried.
+     */
+    private String payload;
+
+    /**
      * The current status of the delivery.
      */
     private DeliveryStatus status;
+
+    /**
+     * The number of retries already performed for this delivery.
+     */
+    private int retryCount;
+
+    /**
+     * Claim token of the instance currently retrying this delivery, or {@code null} when unclaimed.
+     */
+    @Indexed
+    private String lockedBy;
+
+    /**
+     * Time at which the current claim expires, or {@code null} when unclaimed.
+     */
+    private Instant lockedUntil;
+
+    /**
+     * Time at which the delivery was created.
+     */
+    private Instant createdAt;
+
+    /**
+     * Time at which the delivery was last updated.
+     */
+    private Instant updatedAt;
 
     /**
      * Default constructor for MongoDB entity mapping.
@@ -41,65 +88,93 @@ public class MongoDeliveryEntity {
      *
      * @param id the unique identifier for the delivery
      * @param notificationId the identifier of the associated notification
+     * @param payload the notification payload
      * @param status the current status of the delivery
+     * @param retryCount the number of retries already performed
      */
-    public MongoDeliveryEntity(String id, String notificationId, DeliveryStatus status) {
+    public MongoDeliveryEntity(
+        String id,
+        String notificationId,
+        String payload,
+        DeliveryStatus status,
+        int retryCount
+    ) {
         this.id = id;
         this.notificationId = notificationId;
+        this.payload = payload;
         this.status = status;
+        this.retryCount = retryCount;
     }
 
-    /**
-     * Gets the unique identifier for the delivery.
-     *
-     * @return the delivery identifier
-     */
     public String getId() {
         return id;
     }
 
-    /**
-     * Sets the unique identifier for the delivery.
-     *
-     * @param id the delivery identifier to set
-     */
     public void setId(String id) {
         this.id = id;
     }
 
-    /**
-     * Gets the identifier of the notification associated with this delivery.
-     *
-     * @return the notification identifier
-     */
     public String getNotificationId() {
         return notificationId;
     }
 
-    /**
-     * Sets the identifier of the notification associated with this delivery.
-     *
-     * @param notificationId the notification identifier to set
-     */
     public void setNotificationId(String notificationId) {
         this.notificationId = notificationId;
     }
 
-    /**
-     * Gets the current status of the delivery.
-     *
-     * @return the delivery status
-     */
+    public String getPayload() {
+        return payload;
+    }
+
+    public void setPayload(String payload) {
+        this.payload = payload;
+    }
+
     public DeliveryStatus getStatus() {
         return status;
     }
 
-    /**
-     * Sets the current status of the delivery.
-     *
-     * @param status the delivery status to set
-     */
     public void setStatus(DeliveryStatus status) {
         this.status = status;
+    }
+
+    public int getRetryCount() {
+        return retryCount;
+    }
+
+    public void setRetryCount(int retryCount) {
+        this.retryCount = retryCount;
+    }
+
+    public String getLockedBy() {
+        return lockedBy;
+    }
+
+    public void setLockedBy(String lockedBy) {
+        this.lockedBy = lockedBy;
+    }
+
+    public Instant getLockedUntil() {
+        return lockedUntil;
+    }
+
+    public void setLockedUntil(Instant lockedUntil) {
+        this.lockedUntil = lockedUntil;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
