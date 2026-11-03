@@ -46,6 +46,10 @@
         </dependency>
         <dependency>
             <groupId>com.pluralkraft</groupId>
+            <artifactId>adapters-inbound-scheduler</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.pluralkraft</groupId>
             <artifactId>adapters-outbound-kafka</artifactId>
         </dependency>
         <dependency>

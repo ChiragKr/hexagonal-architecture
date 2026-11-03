@@ -30,3 +30,15 @@ spring:
 notification:
   web:
     endpoint: http://localhost:8080
+  retry:
+    # Delay between retry runs (per instance) and initial delay after startup
+    interval: PT1M
+    initial-delay: PT30S
+    # Number of most recent FAILURE deliveries claimed per run
+    batch-size: 50
+    # Retries before a notification is published to the dead letter topic
+    max-retries: 3
+    # Claim lease; must exceed the worst-case duration of a batch
+    lease: PT5M
+    dlq-topic: notification.dlq
+    dlq-send-timeout: PT10S

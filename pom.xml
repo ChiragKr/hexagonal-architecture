@@ -43,6 +43,11 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
+                <artifactId>adapters-inbound-scheduler</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>adapters-outbound-kafka</artifactId>
                 <version>${project.version}</version>
             </dependency>
