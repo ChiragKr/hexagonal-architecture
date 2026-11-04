@@ -7,6 +7,15 @@ Solid arrows show runtime call direction (orange: RetryNotificationService); com
 
 Dependency rule: adapters depend on ports; application depends only on ports and domain; domain depends on nothing.
 
+## Module dependencies: the hexagon enforced by Maven
+
+![Module Dependencies](docs/module-dependencies.svg)
+
+Arrow A → B: module A depends on module B. No adapter depends on another adapter, and nothing depends on bootstrap
+
+> [!NOTE]
+> Unlike a single Maven module where the hexagon is enforced by package conventions, this app uses separate Maven modules: application physically cannot import an adapter class, and no adapter can import another adapter.
+
 ## Building and Running
 
 ### Prerequisites
