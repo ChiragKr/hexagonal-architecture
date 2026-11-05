@@ -1,6 +1,21 @@
 # hexagonal-architecture
 This project demonstrates the core principles of Hexagonal Architecture (Ports and Adapters). The architecture ensures that business logic remains decoupled from frameworks, databases, and external APIs. By decoupling the business logic from external infrastructure, the system remains maintainable, testable, and adaptable to changing technologies.
 
+![Hexagonal Architecture](docs/hexagonal-architecture.svg)
+
+Solid arrows show runtime call direction (orange: RetryNotificationService); compile-time (Maven) dependencies point inward to the ports. Dashed arrows are loops or stubs.
+
+Dependency rule: adapters depend on ports; application depends only on ports and domain; domain depends on nothing.
+
+## Module dependencies: the hexagon enforced by Maven
+
+![Module Dependencies](docs/module-dependencies.svg)
+
+Arrow A → B: module A depends on module B. No adapter depends on another adapter, and nothing depends on bootstrap
+
+> [!NOTE]
+> Unlike a single Maven module where the hexagon is enforced by package conventions, this app uses separate Maven modules: application physically cannot import an adapter class, and no adapter can import another adapter.
+
 ## Building and Running
 
 ### Prerequisites
